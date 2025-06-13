@@ -1,3 +1,4 @@
+Episode 2 *************
 # react by akshay 
 
 we used cdn links to add react
@@ -34,3 +35,4 @@ we set javascript file as module bcoz we are doing the import export thing in it
 adding parcel-cache and dist to git ignore file bcoz it can be generated again by npx parcel command 
 
 
+Episode 3 *************
