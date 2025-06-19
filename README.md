@@ -36,3 +36,26 @@ adding parcel-cache and dist to git ignore file bcoz it can be generated again b
 
 
 Episode 3 *************
+#swiggy app
+
+/* My Food App structure will look like this, 
+            1) Header
+                - Logo
+                - Nav Items(right side)
+                - Cart
+            2) Body
+                - Search bar
+                - Restaurants List
+                    - Restaurant card
+                        - Image
+                        - Name
+                        - Rating
+            3) Footer
+                - Links
+                - Copyrights
+       
+*/
+
+import Header from "./Header";
+import { Header } from "./Header"; // ❌ Duplicate identifier
+can't use both simultaneously , if some bundle support that still it's not valid to use 
