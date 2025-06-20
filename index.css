@@ -53,4 +53,7 @@
   justify-content: flex-start;
 }
 
-
+.filter-btn {
+  margin: 5px;
+  
+}
