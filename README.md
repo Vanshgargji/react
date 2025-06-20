@@ -59,3 +59,21 @@ Episode 3 *************
 import Header from "./Header";
 import { Header } from "./Header"; // ❌ Duplicate identifier
 can't use both simultaneously , if some bundle support that still it's not valid to use 
+
+
+Two types of Export/Import
+
+- Default Export/Import
+
+export default Component;
+import Component from "path";
+
+- Named Export/Import
+
+export const Component;
+import {Component} from "path";
+
+# React Hooks
+(Normal JS utility functions)
+🔆 useState() - super powerful variables
+- useEffect() - 
