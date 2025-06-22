@@ -1,10 +1,14 @@
 // import resList from "../utils/mockData";
 import RestaurantCard from "./RestaurantCard";
 import { useState, useEffect } from "react";
+import Shimmer from "./Shimmer";
 
 const Body = () => {
-  //  state variable - super powerful variable 
+        //  state variable - super powerful variable 
         const [listOfRestaurants , setlistOfRestaurants] =  useState([]) ;
+
+        // whenever state variable updates , react triggers a reconciliation cycle (re-renders the component)
+        const [searchText , setsearchText] = useState("");
 
         useEffect(()=>{
           fetchData();          
@@ -15,7 +19,7 @@ const Body = () => {
 
           const json = await data.json();
           console.log(json);
-          setlistOfRestaurants(json.data.cards[1].card.card.gridElements.infoWithStyle.restaurants)
+          setlistOfRestaurants(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
           
         }
 
@@ -56,11 +60,27 @@ const Body = () => {
       //                                       },  
       //                           }] ;
 
-  return (
+    // conditional rendering- page will show fake cards when first loads
+    // if(listOfRestaurants.length ===0){
+    //  return <Shimmer />
+    // }
+      
+    console.log("body rendered")
+
+    // using ternary operator - when list is empty shimmer will shows 
+    return listOfRestaurants.length ===0 ? (<Shimmer/>) : (
 
     <div className="Body">
 
       <div className="filter">
+        <div className="search">
+          <input type="text" className="search-box" value={searchText} 
+            onChange={(e)=>{
+              setsearchText(e.target.value)
+            }}
+          ></input>
+          <button className="search-button">search</button>
+        </div>
         <button className="filter-btn"
           onClick={()=>{
             const filteredList = listOfRestaurants.filter(
