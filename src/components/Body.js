@@ -5,13 +5,14 @@ import Shimmer from "./Shimmer";
 
 const Body = () => {
         //  state variable - super powerful variable 
-        const [listOfRestaurants , setlistOfRestaurants] =  useState([]) ;
+        const [listOfRestaurants , setlistOfRestaurants] =  useState([]) ;//dynamic
+        const [fullList , setfullList] = useState([]); //static
 
         // whenever state variable updates , react triggers a reconciliation cycle (re-renders the component)
         const [searchText , setsearchText] = useState("");
 
         useEffect(()=>{
-          fetchData();          
+          fetchData(); 
         },[]);    
         
         const fetchData = async () => {
@@ -20,6 +21,7 @@ const Body = () => {
           const json = await data.json();
           console.log(json);
           setlistOfRestaurants(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
+          setfullList(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
           
         }
 
@@ -68,22 +70,38 @@ const Body = () => {
     console.log("body rendered")
 
     // using ternary operator - when list is empty shimmer will shows 
-    return listOfRestaurants.length ===0 ? (<Shimmer/>) : (
+    return fullList.length ===0 ? (<Shimmer/>) : (
 
     <div className="Body">
-
       <div className="filter">
+
         <div className="search">
           <input type="text" className="search-box" value={searchText} 
             onChange={(e)=>{
               setsearchText(e.target.value)
-            }}
+
+                 const update = fullList.filter((res)=>{
+                return res.info.name.toLowerCase().includes(e.target.value.toLowerCase());                
+            })
+
+            console.log(searchText);
+            console.log(update);
+          }}
           ></input>
-          <button className="search-button">search</button>
+          <button className="search-button"
+          //  onClick={()=>{
+          //   const update = fullList.filter((res)=>{
+          //       return res.info.name.toLowerCase().includes(searchText.toLowerCase());                
+          //   })
+          //   console.log(update);
+            
+          //   setlistOfRestaurants(update);
+          //  }} 
+          >search</button>
         </div>
         <button className="filter-btn"
           onClick={()=>{
-            const filteredList = listOfRestaurants.filter(
+            const filteredList = fullList.filter(
               (x)=> x.info.avgRating > 4.3
             )
              
