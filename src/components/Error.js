@@ -1,5 +1,6 @@
 //  this hook gives us more information about the error , previously we are using "react-router-DOM" but now react-router
 import { useRouteError } from "react-router";
+import { Link } from "react-router";
 
 const Error = () => {
   const err = useRouteError();
@@ -12,6 +13,7 @@ const Error = () => {
       <h3>
         {err.statusText} : {err.status} 
       </h3>
+
     </div>
   );
 };
