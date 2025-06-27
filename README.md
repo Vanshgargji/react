@@ -78,3 +78,18 @@ import {Component} from "path";
 🔆 useState() - super powerful variables
 - useEffect() - 
 
+# episode 8 classy 
+
+ parent construstor
+ parent rendered 
+
+    firstconstructor
+    firstrendered
+
+    secondconstructor
+    secondrendered
+
+    firstdid mount
+    seconddid mount
+
+ parent did mount

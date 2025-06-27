@@ -1,37 +1,58 @@
-import { useEffect } from "react";
+import { useState ,useEffect } from "react";
+import Shimmer from "./Shimmer";
+import { useParams } from "react-router";
 
 const RestaurantMenu = () => {
+  const [menuItems , setMenuItems] = useState(null);
+
+  const {resId} = useParams();
   
   useEffect(() => {
-    fetchMenu();
+    fetchMenuItems();
   }, []);
-  
-  const fetchMenu = async () => {
-    try {
-      const data = await fetch(
-        "https://www.swiggy.com/dapi/restaurants/list/v5?lat=30.35449958678775&lng=76.36606219821117&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
-      );
-      const json = await data.json();
-      console.log("json from res menu", json);
-    } catch {
-      console.log("not fetched");
-    }
-    
-  };
+ 
+
+  const fetchMenuItems = async ()=> {
+    const data =  await fetch("https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=30.3610131&lng=76.37323889999999&restaurantId="+resId);
+    const json =  await data.json();
+    console.log(json);
+    setMenuItems(json.data);
+
+  }
   
   console.log("restaurant Menu rendered");
 
+  if(menuItems === null) return <Shimmer /> ; 
+
+ 
+  // ✅ Dynamically find groupedCard
+  const groupedCard = menuItems.cards?.find((card) => card.groupedCard)?.groupedCard;
+
+  // ✅ Get all regular cards under REGULAR section
+  const regularCards = groupedCard?.cardGroupMap?.REGULAR?.cards || [];
+
+  // ✅ Find the first card that contains itemCards
+  const itemCategoryCard = regularCards.find(
+    (c) =>
+      c.card?.card?.["@type"] ===
+      "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
+  );
+
+  const itemCards = itemCategoryCard?.card?.card?.itemCards || [];
+
   return (
     <div className="Menu">
-      <h1>Name of the restaurant</h1>
-      <h2>Menu</h2>
       <ul>
-        <li>Briyani</li>
-        <li>Roti</li>
-        <li>Pulao</li>
+        {itemCards.map((item) => (
+          <li key={item.card.info.id}>
+            {item.card.info.name} - Rs.{" "}
+            {(item.card.info.price || item.card.info.defaultPrice) / 100}
+          </li>
+        ))}
       </ul>
     </div>
   );
 };
 
 export default RestaurantMenu;
+
