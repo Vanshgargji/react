@@ -3,28 +3,15 @@ import RestaurantCard from "./RestaurantCard";
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import Shimmer from "./Shimmer";
+import useRestaurantList from "../utils/useRestaurantList";
+import useOnlineStatus from "../utils/useOnlineStatus";
 
 const Body = () => {
-        //  state variable - super powerful variable 
-        const [listOfRestaurants , setlistOfRestaurants] =  useState([]) ;//dynamic
-        const [fullList , setfullList] = useState([]); //static
-
-        // whenever state variable updates , react triggers a reconciliation cycle (re-renders the component)
-        const [searchText , setsearchText] = useState("");
-
-        useEffect(()=>{
-          fetchData(); 
-        },[]);    
-        
-        const fetchData = async () => {
-          const data = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=30.3610131&lng=76.37323889999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING#");
-
-          const json = await data.json();
-          console.log(json);
-          setlistOfRestaurants(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
-          setfullList(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-          
-        }
+  // whenever state variable updates , react triggers a reconciliation cycle (re-renders the component)
+  const [searchText , setsearchText] = useState("");
+  
+  // using custom hook to get dynamic and static restaurant list
+  const [listOfRestaurants,fullList] = useRestaurantList();
 
   // normal js variable 
       // let listOfRestaurants = [
@@ -69,6 +56,14 @@ const Body = () => {
     // }
       
     console.log("body rendered")
+
+    // if offline this returns else the below body part will returns 
+    const onlineStatus = useOnlineStatus() ;
+    if(onlineStatus===false)
+      {
+        return <h1>you are offline</h1>
+      } 
+
 
     // using ternary operator - when list is empty shimmer will shows 
     return fullList.length ===0 ? (<Shimmer/>) : (
