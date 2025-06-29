@@ -1,10 +1,11 @@
 // import resList from "../utils/mockData";
-import RestaurantCard from "./RestaurantCard";
+import RestaurantCard, { withPromotedLabel } from "./RestaurantCard";
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import Shimmer from "./Shimmer";
 import useRestaurantList from "../utils/useRestaurantList";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import { withPromotedLabel } from "./RestaurantCard";
 
 const Body = () => {
   // whenever state variable updates , react triggers a reconciliation cycle (re-renders the component)
@@ -77,14 +78,18 @@ const Body = () => {
 
   console.log("body rendered");
 
+  const RestaurantCardPromoted = withPromotedLabel(RestaurantCard);
+
   // if offline this returns else the below body part will returns
   const onlineStatus = useOnlineStatus();
   if (onlineStatus === false) {
     return <h1>you are offline</h1>;
   }
+  
+
 
   // using ternary operator - when list is empty shimmer will shows
-  return fullList.length === 0 ? (
+  return fullList?.length === 0 ? (
     <Shimmer />
   ) : (
     <div className="Body">
@@ -139,7 +144,9 @@ const Body = () => {
               key={restaurant.info.id}
               className="transform transition duration-300 hover:scale-95 hover:shadow-lg"
             >
-              <RestaurantCard resData={restaurant} />
+            {/* if a restaurant is promoted add a promoted label to it */}
+            {restaurant.info.avgRating<4.4? <RestaurantCardPromoted resData={restaurant}/> :<RestaurantCard resData={restaurant} /> }
+              
             </Link>
           ))}
         </div>
@@ -149,3 +156,4 @@ const Body = () => {
 };
 
 export default Body;
+

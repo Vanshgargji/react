@@ -12,7 +12,7 @@ const RestaurantCard = (props) => {
         alt="res-logo"
         src={CDN_URL + resData.info.cloudinaryImageId}
       />
-      <h3 className="m-0 font-semibold text-[18px] leading-[22px] tracking-[-0.45px] text-[rgba(2,6,12,0.92)] overflow-hidden text-ellipsis whitespace-nowrap">
+      <h3 className="m-0 font-semibold text-[18px] leading-[22px] tracking-[-0.45px]  text-[rgba(2,6,12,0.92)] overflow-hidden text-ellipsis whitespace-nowrap">
         {name}
       </h3>
 
@@ -23,5 +23,19 @@ const RestaurantCard = (props) => {
     </div>
   );
 };
+
+// higher order component 
+// input restaurant card ==>> restaurant card promoted
+
+export const withPromotedLabel = (RestaurantCard)=>{
+  return (props)=>{
+    return (
+    <div>
+      <label className="absolute bg-black text-white  ml-[-4px] mt-2 p-2">Promoted</label>
+      <RestaurantCard {...props} />
+    </div>
+    )
+  }
+}
 
 export default RestaurantCard;

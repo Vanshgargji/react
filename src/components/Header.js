@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { LOGO_URL } from "../utils/constants";
 import { Link } from "react-router";
 import useOnlineStatus from "../utils/useOnlineStatus";
-
+import UserContext from "../utils/UserContext";
+import { useSelector } from "react-redux";
 
  const Header = () => {
 
@@ -15,6 +16,12 @@ import useOnlineStatus from "../utils/useOnlineStatus";
   useEffect(()=>{
     console.log("useEffect called")
   })
+
+  const {loggedIn} = useContext(UserContext) ;
+
+  // subscribing to the store using a selector
+  const cartItems = useSelector((store)=> {return store.cart.items}); 
+  console.log("CARTIDEMS",cartItems)
 
  return (
   <div className="header flex justify-between items-center bg-white shadow-[0_2px_4px_rgba(0,0,0,0.08)] px-8 py-3 m-0">
@@ -38,7 +45,7 @@ import useOnlineStatus from "../utils/useOnlineStatus";
           <Link to="/contact">Contact Us</Link>
         </li>
         <li className="px-4 py-2 hover:text-orange-500 cursor-pointer">
-          Cart
+          <Link to="/cart">🛒 {cartItems?.length}</Link>
         </li>
         <button
           className="bg-gray-100 px-4 py-1.5 ml-4 rounded-md hover:bg-gray-200 transition"
@@ -50,6 +57,7 @@ import useOnlineStatus from "../utils/useOnlineStatus";
         >
           {btnNameReact}
         </button>
+        <li className="font-bold">{loggedIn}</li>
       </ul>
     </div>
 

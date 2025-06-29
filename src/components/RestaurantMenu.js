@@ -1,8 +1,11 @@
 import Shimmer from "./Shimmer";
 import { useParams } from "react-router";
 import useRestaurantMenu from "../utils/useRestaurantMenu";
+import RestaurantCategory from "./RestaurantCategory";
+import { useState } from "react";
 
 const RestaurantMenu = () => {
+  const [showIndex,setShowIndex] = useState(null) ;
 
   const {resId} = useParams();
   const menuItems = useRestaurantMenu(resId);  // making our own hook (which have the main hooks wrapped inside)
@@ -15,24 +18,25 @@ const RestaurantMenu = () => {
   const regularCards = groupedCard?.cardGroupMap?.REGULAR?.cards || [];     // ✅ Get all regular cards under REGULAR section
 
   // ✅ Find the first card that contains itemCards
-  const itemCategoryCard = regularCards.find(  
-    (c) =>
-      c.card?.card?.["@type"] ===
-      "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
-  );
+  const itemCategoryCard = regularCards.filter(
+  (c) => {
+    const type = c.card?.card?.["@type"] 
+    return(
+    type === "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory" || 
+    type === "type.googleapis.com/swiggy.presentation.food.v2.NestedItemCategory"
+    )
+  }
+);
 
-  const itemCards = itemCategoryCard?.card?.card?.itemCards || [];
+  console.log("item category card",itemCategoryCard);
 
   return (
-    <div className="Menu">
-      <ul>
-        {itemCards.map((item) => (
-          <li key={item.card.info.id}>
-            {item.card.info.name} - Rs.{" "}
-            {(item.card.info.price || item.card.info.defaultPrice) / 100}
-          </li>
-        ))}
-      </ul>
+    <div className="Menu mt-20 ">
+      {itemCategoryCard.map((category,index)=>{
+      return <RestaurantCategory key = {category?.card?.card?.categoryId} data = {category?.card?.card}
+        showItems={index===showIndex ? true:false}
+        setShowIndex={()=>setShowIndex(index)} />
+      })}
     </div>
   );
 };
