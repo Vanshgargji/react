@@ -92,7 +92,7 @@ const Body = () => {
   return fullList?.length === 0 ? (
     <Shimmer />
   ) : (
-    <div className="Body">
+    <div className="Body ">
       <div className="filter flex">
         <div className="search p-4">
           <input
@@ -136,8 +136,8 @@ const Body = () => {
           Top Rated Restaurants
         </button>
       </div>
-      <div className="outer-container px-8 sm:px-16 md:px-20 lg:px-24 py-8">
-        <div className="res-container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 justify-items-center">
+      <div className="outer-container px-8 sm:px-16 md:px-20 lg:px-24 py-8 ">
+        <div className="res-container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 justify-items-center ">
           {listOfRestaurants.map((restaurant) => (
             <Link
               to={"/restaurant/" + restaurant.info.id}

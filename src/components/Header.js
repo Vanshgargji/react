@@ -6,6 +6,8 @@ import UserContext from "../utils/UserContext";
 import { useSelector } from "react-redux";
 
  const Header = () => {
+  const cartItems = useSelector((store) => store.cart.items);
+  const cartCount = Object.values(cartItems).reduce((total, curr) => total + curr.quantity, 0);
 
   const onlineStatus = useOnlineStatus();
 
@@ -20,7 +22,6 @@ import { useSelector } from "react-redux";
   const {loggedIn} = useContext(UserContext) ;
 
   // subscribing to the store using a selector
-  const cartItems = useSelector((store)=> {return store.cart.items}); 
   console.log("CARTIDEMS",cartItems)
 
  return (
@@ -45,7 +46,7 @@ import { useSelector } from "react-redux";
           <Link to="/contact">Contact Us</Link>
         </li>
         <li className="px-4 py-2 hover:text-orange-500 cursor-pointer">
-          <Link to="/cart">🛒 {cartItems?.length}</Link>
+          <Link to="/cart">🛒 {cartCount}</Link>
         </li>
         <button
           className="bg-gray-100 px-4 py-1.5 ml-4 rounded-md hover:bg-gray-200 transition"
